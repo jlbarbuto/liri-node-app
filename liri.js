@@ -21,14 +21,14 @@ for (i=0; i<arr.length; i++){
 }
  
 // FUNCTIONS ==============================================================
+//"my=tweets" will pull the last 20 tweets from user timeline
 function twitterFunction(){
-    // var queryURL = "https://api.twitter.com/1.1/search/tweets.json?q=nyx_the_grey&src=typd"
     var params = {screen_name: 'nyx_the_grey'};
-    client.get('statuses/user_timeline', params, function(error, tweets, response){
+    client.get('statuses/user_timeline', params, function(error, tweets, response){ //using twitter npm to query tweet data
         if (!error){
             console.log("@nyx_the_grey:")
             for (var i=0; i<20; i++){
-                console.log((i+1) + ". " + tweets[i].text);
+                console.log((i+1) + ". " + tweets[i].text); //logs tweets to the user
             };
         }else{
             console.log("Error: " + error);
@@ -36,6 +36,7 @@ function twitterFunction(){
     });
 }
 
+//"spotify-this-song" will pull song info based on user input of song title
 function spotifyFunction(){
     if (process.argv.length<=3 && command==="spotify-this-song"){
         var song = "The+Sign"; //if no user specified movie, default is "The Sign"
@@ -43,18 +44,19 @@ function spotifyFunction(){
         var song = arrString;
     }
     
-    spotify.search({type:"track", query:song}, function(error,data){
+    spotify.search({type:"track", query:song}, function(error,data){ //using spotify npm to query song data
         if(error){
             console.log("Error: " + error);
         }
         console.log("Song Title: " + data.tracks.items[0].name);
-        console.log("Artist: " + (data.tracks.items[0].album.artists[0].name));
+        console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
         console.log("Link: " + data.tracks.items[0].album.external_urls.spotify);
         console.log("Album Title: " + data.tracks.items[0].album.name);
     
     });
 };
 
+//"movie-this" will pull movie info based on user input of movie title
 function movieFunction(){
     if (process.argv.length<=3){
         var movie = "Mr.Nobody"; //if no user specified movie, default is "Mr. Nobody"
@@ -78,21 +80,18 @@ function movieFunction(){
 }
 
 //MAIN PROCESS ===========================================================
-
-//twitter api will diaplay most recent 20 tweets
+//else if determies what action user wants to run and does the appropriate functions
 if (command === "my-tweets"){
     twitterFunction();
 
-//user input of "spotify-this-song" will use spotify api to search for song information
 }else if (command === "spotify-this-song"){
     spotifyFunction();
 
-//user input of "movie-this" will use OMBD api to search for movie information
 }else if (command === "movie-this"){
     movieFunction();
     
 }else if (command === "do-what-it-says"){
-    fs.readFile("random.txt", "utf8", function(error, data){
+    fs.readFile("random.txt", "utf8", function(error, data){ //reads the random.txt file to pull the action command from
         if (error){
             return console.log("Error: " + error);
         }
