@@ -44,7 +44,7 @@ function spotifyFunction(){
         var song = arrString;
     }
     
-    spotify.search({type:"track", query:song}, function(error,data){ //using spotify npm to query song data
+    spotify.search({type:"track", query: "\"" + song + "\""}, function(error,data){ //using spotify npm to query song data
         if(error){
             console.log("Error: " + error);
         }
